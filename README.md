@@ -23,6 +23,12 @@ Leif is a custom-built, highly personalized AI assistant designed from scratch. 
 - **Codebase Intelligence System:** A 3-tool pipeline (`codebase_reader.py`, `codebase_summarizer.py`, `codebase_compiler.py`) to parse, summarize, and compress massive repositories into lightweight intelligence reports.
 - **VS Code Extension (`leif-vscode`):** A dedicated, native IDE extension bringing Leif's Agent Mode directly into your editor's sidebar.
 
+## 🚀 Phase 8 — 4-Tier MoE Architecture (In Progress)
+- **Mixture of Experts Orchestration:** Upgrading Leif to delegate tasks across specialized local and cloud models.
+- **Tier 1 (Local Experts):** Ollama-powered local models for copywriting (`llama3`) and web development (`deepseek-coder`).
+- **Tier 2 (Premium Review):** Intermediate validation using tools like Copilot.
+- **Tier 3 (Master Review):** Final-stage polish utilizing flagship models (GPT-4o, Claude 3.5).
+
 ## 🛠️ Tech Stack
 | Layer | Technology |
 |---|---|
@@ -36,6 +42,7 @@ Leif is a custom-built, highly personalized AI assistant designed from scratch. 
 For technical walkthroughs and dev logs, check out the [docs](./docs) folder:
 * [**Build Plan**](./docs/BUILD_PLAN.md) — The complete phase-by-phase roadmap.
 * [**Phase 7 Plan**](./docs/PHASE_7_PLAN.md) — The Codebase Intelligence Sub-System architecture.
+* [**Phase 8 MoE Plan**](./docs/implementation_plan(m_plan).md) — The Multi-Agent Mixture of Experts design.
 * [**Vision Document**](./docs/VISION.md) — The full architectural vision.
 * [**Auto Trainer Guide**](./docs/AUTO_TRAINER_GUIDE.md) — How to export and fine-tune models.
 * [Capabilities Analysis](./docs/CAPABILITIES.md) — Breakdown of features and limitations.
