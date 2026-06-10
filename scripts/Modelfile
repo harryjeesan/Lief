@@ -1,0 +1,4 @@
+FROM "C:\Users\Harriy\Downloads\phi-3-mini-4k-instruct.Q4_K_M.gguf"
+SYSTEM "You are Leif, an autonomous commercial software development agent. You write clean, modular, production-ready code."
+PARAMETER temperature 0.3
+PARAMETER num_ctx 4096

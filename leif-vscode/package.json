@@ -1,0 +1,57 @@
+{
+  "name": "leif-vscode",
+  "displayName": "Leif: Agent Mode",
+  "description": "The dedicated native AI Agent teammate.",
+  "version": "0.0.1",
+  "publisher": "harryjeesan",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Machine Learning"
+  ],
+  "activationEvents": [
+    "onView:leifSidebar"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "leif-container",
+          "title": "Leif",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "leif-container": [
+        {
+          "type": "webview",
+          "id": "leifSidebar",
+          "name": "Agent Mode",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "leif.start",
+        "title": "Start Leif"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.90.0",
+    "@types/node": "18.x",
+    "typescript": "^5.3.3"
+  }
+}

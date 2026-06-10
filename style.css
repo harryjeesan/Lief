@@ -1,0 +1,69 @@
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #0f172a;
+  color: #fff;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+/* Hero Section */
+header {
+  background-color: #0f172a;
+  padding: 50px 0;
+}
+
+header h1 {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+header p {
+  font-size: 18px;
+  color: #ccc;
+}
+
+/* Main Content */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Form Styles */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input[type="email"] {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 300px;
+}
+
+button {
+  background-color: #06b6d4;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #04a3db;
+}
+
+/* Success Message */
+#success-message {
+  font-size: 18px;
+  color: #06b6d4;
+  margin-top: 10px;
+}

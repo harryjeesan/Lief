@@ -1,0 +1,107 @@
+[
+  {
+    "title": "React useEffect Cleanup",
+    "prompt": "Leif, a client has a React component that sets up a WebSocket connection in a useEffect hook. It's causing memory leaks because it opens a new connection on every render. Fix it.",
+    "perfect_response": "The memory leak is happening because the WebSocket connection is not being closed when the component unmounts or re-renders. You need to return a cleanup function from the `useEffect` hook.\n\nHere is the correct implementation:\n\n```jsx\nimport React, { useEffect, useState } from 'react';\n\nexport default function LiveChat() {\n  const [messages, setMessages] = useState([]);\n\n  useEffect(() => {\n    const ws = new WebSocket('wss://api.example.com/chat');\n\n    ws.onmessage = (event) => {\n      setMessages(prev => [...prev, JSON.parse(event.data)]);\n    };\n\n    // Cleanup function: closes the connection when the component unmounts\n    return () => {\n      ws.close();\n    };\n  }, []); // Empty dependency array ensures it only connects on mount\n\n  return <div>{/* Chat UI */}</div>;\n}\n```"
+  },
+  {
+    "title": "Python CSV to JSON Converter",
+    "prompt": "Leif, write a quick Python script to convert a CSV file named 'data.csv' into a formatted JSON file named 'data.json' using the built-in libraries.",
+    "perfect_response": "Here is a clean Python script using the built-in `csv` and `json` libraries. It uses `DictReader` to automatically map the CSV headers to JSON keys.\n\n```python\nimport csv\nimport json\nimport logging\n\nlogging.basicConfig(level=logging.INFO)\n\ndef convert_csv_to_json(csv_file: str, json_file: str):\n    try:\n        data = []\n        with open(csv_file, mode='r', encoding='utf-8') as f:\n            reader = csv.DictReader(f)\n            for row in reader:\n                data.append(row)\n\n        with open(json_file, mode='w', encoding='utf-8') as f:\n            json.dump(data, f, indent=4)\n            \n        logging.info(f'Successfully converted {csv_file} to {json_file}.')\n    except FileNotFoundError:\n        logging.error(f'Error: The file {csv_file} was not found.')\n    except Exception as e:\n        logging.error(f'An unexpected error occurred: {e}')\n\nif __name__ == '__main__':\n    convert_csv_to_json('data.csv', 'data.json')\n```"
+  },
+  {
+    "title": "Next.js Image Optimization",
+    "prompt": "Leif, how do I properly use the Next.js `<Image />` component for an external image URL? It's throwing a hostname error.",
+    "perfect_response": "To use external images with the Next.js `<Image />` component, you must whitelist the external domain in your `next.config.js` (or `next.config.mjs`) file to prevent abuse of the Next.js image optimization API.\n\nHere is how you fix it:\n\n1. Update your `next.config.js`:\n```javascript\n/** @type {import('next').Config} */\nconst nextConfig = {\n  images: {\n    remotePatterns: [\n      {\n        protocol: 'https',\n        hostname: 'example-cdn.com', // Replace with your external domain\n        port: '',\n        pathname: '/**', // Allow all paths under this domain\n      },\n    ],\n  },\n};\n\nmodule.exports = nextConfig;\n```\n\n2. Then restart your Next.js development server. The `<Image src=\"https://example-cdn.com/photo.jpg\" width={500} height={500} alt=\"Photo\" />` component will now work perfectly."
+  },
+  {
+    "title": "SQL INNER JOIN vs LEFT JOIN",
+    "prompt": "Leif, a client wants a query to show all users and their recent orders. If a user hasn't made an order, they should STILL show up in the results with null order data. Do I use INNER JOIN or LEFT JOIN?",
+    "perfect_response": "You must use a **LEFT JOIN**.\n\nAn `INNER JOIN` requires a match in both tables, meaning any user without an order would be completely filtered out of the results.\n\nA `LEFT JOIN` takes all records from the left table (Users) and matches them with the right table (Orders). If there is no match, the user still appears, but the order columns will contain `NULL`.\n\nHere is the exact SQL you should provide to the client:\n\n```sql\nSELECT \n    u.id AS user_id, \n    u.name, \n    o.order_id, \n    o.total_amount\nFROM \n    users u\nLEFT JOIN \n    orders o ON u.id = o.user_id;\n```"
+  },
+  {
+    "title": "Node.js Environment Variables",
+    "prompt": "Leif, write a snippet showing how to use the `dotenv` package in a Node.js project to securely load a database password from a `.env` file.",
+    "perfect_response": "Here is the standard way to securely load environment variables in a Node.js application.\n\nFirst, you create a `.env` file in the root of your project:\n```env\nDB_PASSWORD=super_secret_password_123\n```\n\nThen, in your main Node.js file (e.g., `index.js`), you configure `dotenv` at the very top of the file:\n\n```javascript\n// Load environment variables immediately\nrequire('dotenv').config();\n\n// Now you can securely access the password via process.env\nconst dbPassword = process.env.DB_PASSWORD;\n\nif (!dbPassword) {\n  console.error('CRITICAL ERROR: DB_PASSWORD is missing in .env file!');\n  process.exit(1);\n}\n\n// Pass the secure password to your database connection logic\nconsole.log('Database password loaded securely.');\n```"
+  },
+  {
+    "title": "Tailwind CSS Grid Layout",
+    "prompt": "Leif, write a Tailwind CSS class string for a responsive product grid. It should have 1 column on mobile, 2 columns on tablets, and 4 columns on desktop, with a gap of 16px between items.",
+    "perfect_response": "Here is the exact Tailwind class string for that responsive grid:\n\n```html\n<div className=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4\">\n  {/* Product Cards Go Here */}\n</div>\n```\n\n**Breakdown:**\n* `grid`: Enables CSS Grid.\n* `grid-cols-1`: Defaults to 1 column (mobile-first).\n* `md:grid-cols-2`: At 768px (tablets), switches to 2 columns.\n* `lg:grid-cols-4`: At 1024px (desktops), switches to 4 columns.\n* `gap-4`: Creates exactly 16px of spacing between the items (`4 * 4px = 16px`)."
+  },
+  {
+    "title": "Python Dictionary Comprehension",
+    "prompt": "Leif, I have a list of names `['Alice', 'Bob', 'Charlie']`. Write a Python 1-liner to create a dictionary where the keys are the names and the values are the lengths of those names. Use dictionary comprehension.",
+    "perfect_response": "Here is the clean, Pythonic one-liner using dictionary comprehension:\n\n```python\nnames = ['Alice', 'Bob', 'Charlie']\n\nname_lengths = {name: len(name) for name in names}\n\n# Output: {'Alice': 5, 'Bob': 3, 'Charlie': 7}\n```"
+  },
+  {
+    "title": "Express.js Error Handling Middleware",
+    "prompt": "Leif, how do I create a global error handler in Express.js so that if an API route crashes, the server doesn't shut down, and it returns a formatted 500 JSON response instead?",
+    "perfect_response": "To create a global error handler in Express, you write a middleware function that takes exactly 4 arguments: `(err, req, res, next)`. Express automatically recognizes this signature as an error handler.\n\nYou must place this middleware at the **very end** of your server file, after all your routes.\n\n```javascript\nconst express = require('express');\nconst app = express();\n\n// --- Your normal routes ---\napp.get('/api/data', (req, res) => {\n  throw new Error('Database connection failed!'); // Simulated crash\n});\n\n// --- Global Error Handler (Must be last) ---\napp.use((err, req, res, next) => {\n  console.error(`[Global Error Handler] ${err.message}`);\n  \n  res.status(500).json({\n    success: false,\n    error: 'Internal Server Error',\n    message: err.message\n  });\n});\n\napp.listen(3000, () => console.log('Server running on port 3000'));\n```"
+  },
+  {
+    "title": "Docker Ignore File",
+    "prompt": "Leif, why is it important to include a `.dockerignore` file in a Node.js project, and what should be inside it?",
+    "perfect_response": "A `.dockerignore` file is critical because it prevents large, unnecessary files (like your local `node_modules` folder) from being copied into the Docker build context. This makes the build process drastically faster and keeps the final image size small.\n\nIt also prevents you from accidentally copying local environment variables (`.env`) into the image, which is a major security risk.\n\nHere is a standard `.dockerignore` for a Node project:\n\n```text\nnode_modules\nnpm-debug.log\n.git\n.env\n.next\ndist\nbuild\ncoverage\n```"
+  },
+  {
+    "title": "Client Communication - Milestone Payment",
+    "prompt": "Leif, a client approved my PR for the React frontend redesign, but they haven't funded the next milestone for the Backend API work yet. Draft a polite message asking them to fund the milestone so I can start.",
+    "perfect_response": "Here is a professional and polite message to keep the project moving forward smoothly:\n\n---\n\nHi [Client Name],\n\nI am glad you approved the pull request for the frontend redesign! \n\nI am ready to jump straight into the Backend API phase, but it looks like the next milestone hasn't been funded yet. Could you please go ahead and activate/fund the Backend milestone on Upwork?\n\nAs soon as that is active, I will begin coding the database schemas and API routes right away.\n\nLet me know if you have any questions before we proceed.\n\nBest regards,\nHarry"
+  },
+  {
+    "title": "Git Undo Last Commit",
+    "prompt": "Leif, a client accidentally committed a `.env` file with passwords to their local Git repository, but they HAVEN'T pushed it to GitHub yet. What is the terminal command to undo the commit but keep the files in their editor?",
+    "perfect_response": "Since they haven't pushed it to the remote repository yet, they can use the `git reset --soft` command. \n\nThis command will undo the commit but keep all of the files and changes staged in their editor so they don't lose any work.\n\nTell the client to run this exact command in their terminal:\n\n```bash\ngit reset --soft HEAD~1\n```\n\nOnce they run that, they should immediately add the `.env` file to their `.gitignore`, and then they can safely make a new commit."
+  },
+  {
+    "title": "Python Requests JSON payload",
+    "prompt": "Leif, write a Python `requests` script that makes a POST request to 'https://api.example.com/login' with a JSON payload containing an email and password. Extract the token from the response.",
+    "perfect_response": "Here is a clean implementation using the `requests` library. It uses the `json=` parameter, which automatically sets the correct `Content-Type: application/json` headers for you.\n\n```python\nimport requests\nimport logging\n\nlogging.basicConfig(level=logging.INFO)\n\ndef login_to_api(email: str, password: str):\n    url = 'https://api.example.com/login'\n    payload = {\n        'email': email,\n        'password': password\n    }\n\n    try:\n        response = requests.post(url, json=payload, timeout=10)\n        response.raise_for_status() # Raises an exception for 4xx/5xx status codes\n\n        # Extract token from JSON response\n        data = response.json()\n        token = data.get('token')\n        \n        if token:\n            logging.info('Successfully retrieved authentication token.')\n            return token\n        else:\n            logging.warning('Login succeeded, but no token was returned in the response.')\n            return None\n            \n    except requests.exceptions.HTTPError as err:\n        logging.error(f'HTTP Error: {err.response.status_code} - {err.response.text}')\n    except Exception as e:\n        logging.error(f'An unexpected error occurred: {e}')\n\nif __name__ == '__main__':\n    # Example usage\n    token = login_to_api('user@test.com', 'secure_password')\n```"
+  },
+  {
+    "title": "PostgreSQL UUID Primary Keys",
+    "prompt": "Leif, a client is designing a Postgres database and wants to know the SQL command to create a 'users' table where the primary key is an automatically generated UUID instead of a serial integer.",
+    "perfect_response": "To automatically generate UUIDs in PostgreSQL, they must first ensure the `uuid-ossp` or `pgcrypto` extension is enabled. Modern Postgres versions prefer `pgcrypto` for its `gen_random_uuid()` function.\n\nHere is the SQL command you should provide to the client:\n\n```sql\n-- Enable the extension if it isn't already\nCREATE EXTENSION IF NOT EXISTS pgcrypto;\n\nCREATE TABLE users (\n    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n    email VARCHAR(255) UNIQUE NOT NULL,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n```\n\nThis will automatically assign a secure, random UUID every time a new row is inserted, without needing to generate the UUID in the backend application code."
+  },
+  {
+    "title": "React State Array Update",
+    "prompt": "Leif, a client has a React state array of strings `const [items, setItems] = useState(['Apple', 'Banana'])`. They are trying to add a new item using `items.push('Orange'); setItems(items);` but the UI isn't updating. Explain why and fix it.",
+    "perfect_response": "The UI isn't updating because React relies on **immutability**. \n\nWhen you use `items.push()`, you are mutating the exact same array in memory. When you call `setItems(items)`, React checks if the memory reference of the new state is different from the old state. Since it's the exact same array in memory, React thinks nothing changed, and it skips the re-render.\n\nTo fix this, you must create a brand new array in memory using the spread operator (`...`). Here is the correct code:\n\n```jsx\n// CORRECT: Create a brand new array with the old items plus the new item\nsetItems([...items, 'Orange']);\n```"
+  },
+  {
+    "title": "Client Communication - Feature Creep",
+    "prompt": "Leif, an Upwork client just asked me to add a 'forgot password' flow, but the original contract was only for the login and signup pages. Draft a polite message explaining that this is out of scope and we need to create a new milestone for it.",
+    "perfect_response": "Here is a professional message to handle feature creep while keeping the relationship positive:\n\n---\n\nHi [Client Name],\n\nI can absolutely build out the 'forgot password' email flow and reset page for you!\n\nHowever, since the original contract and milestone were specifically scoped just for the Login and Signup pages, this new feature falls outside of our current scope.\n\nIf you'd like me to tackle this right away, could we set up a new milestone for $XX to cover the additional development time required for the password reset logic and email integration?\n\nLet me know how you'd like to proceed, and I can start immediately!\n\nBest regards,\nHarry"
+  },
+  {
+    "title": "AWS Lambda Node.js Handler",
+    "prompt": "Leif, write a basic AWS Lambda handler in Node.js that takes a 'name' from the JSON body and returns a greeting. Ensure the response format is compatible with API Gateway.",
+    "perfect_response": "Here is a standard AWS Lambda handler compatible with API Gateway Proxy Integrations. It correctly parses the body and returns the required `statusCode` and `body` string.\n\n```javascript\nexports.handler = async (event) => {\n  try {\n    // API Gateway passes the body as a JSON string\n    const body = event.body ? JSON.parse(event.body) : {};\n    const name = body.name || 'World';\n\n    const responsePayload = {\n      message: `Hello, ${name}!`,\n      success: true\n    };\n\n    return {\n      statusCode: 200,\n      headers: {\n        'Content-Type': 'application/json',\n        'Access-Control-Allow-Origin': '*' // CORS requirement\n      },\n      body: JSON.stringify(responsePayload)\n    };\n    \n  } catch (error) {\n    console.error('Lambda Execution Error:', error);\n    return {\n      statusCode: 400,\n      body: JSON.stringify({ error: 'Invalid JSON body provided' })\n    };\n  }\n};\n```"
+  },
+  {
+    "title": "Next.js Environment Variables",
+    "prompt": "Leif, why is a client's `process.env.API_KEY` returning `undefined` inside their React client component in Next.js 14, even though it's set in the `.env` file?",
+    "perfect_response": "In Next.js, standard environment variables (like `API_KEY`) are kept completely secure and are only accessible on the server (Server Components or API Routes). They are intentionally hidden from the browser to prevent leaking secrets.\n\nIf the client absolutely needs to access this variable directly inside a Client Component (which runs in the browser), they must prefix the variable name with `NEXT_PUBLIC_` in their `.env` file.\n\nTell the client to change it in their `.env` file:\n```env\nNEXT_PUBLIC_API_KEY=their_api_key_here\n```\n\nAnd then access it in the client component like this:\n```jsx\nconst apiKey = process.env.NEXT_PUBLIC_API_KEY;\n```"
+  },
+  {
+    "title": "Python JSON File Reading",
+    "prompt": "Leif, write a Python snippet to safely read a JSON file called 'config.json' and extract the 'database_url' key. Handle the case where the file doesn't exist.",
+    "perfect_response": "Here is a safe, robust snippet using context managers (`with`) and exception handling.\n\n```python\nimport json\nimport logging\n\nlogging.basicConfig(level=logging.INFO)\n\ndef get_database_url():\n    try:\n        with open('config.json', 'r', encoding='utf-8') as f:\n            config = json.load(f)\n            \n        # Use .get() to prevent KeyError if the key is missing\n        db_url = config.get('database_url')\n        \n        if db_url:\n            logging.info('Successfully extracted database_url.')\n            return db_url\n        else:\n            logging.warning(\"The key 'database_url' was not found in config.json.\")\n            return None\n            \n    except FileNotFoundError:\n        logging.error('Error: config.json file not found.')\n        return None\n    except json.JSONDecodeError:\n        logging.error('Error: config.json is not a valid JSON file.')\n        return None\n\nif __name__ == '__main__':\n    url = get_database_url()\n```"
+  },
+  {
+    "title": "CSS Flexbox Centering",
+    "prompt": "Leif, a client wants a simple CSS class to perfectly center a `<div>` both vertically and horizontally within the whole screen. Give me the exact CSS snippet.",
+    "perfect_response": "The modern and cleanest way to do this is using CSS Flexbox on a container that takes up the full viewport height.\n\nHere is the exact CSS snippet you can provide:\n\n```css\n.center-screen {\n  display: flex;\n  justify-content: center; /* Centers horizontally */\n  align-items: center;     /* Centers vertically */\n  min-height: 100vh;       /* Takes up the full height of the screen */\n}\n```\n\nUsage in HTML:\n```html\n<div class=\"center-screen\">\n  <div>Perfectly Centered Content!</div>\n</div>\n```"
+  },
+  {
+    "title": "Client Communication - Final Handover",
+    "prompt": "Leif, write a final message to a client providing them with the GitHub repository link containing all their React code. Give them brief instructions on how to install it, and close out the project politely.",
+    "perfect_response": "Here is a polished and professional handover message:\n\n---\n\nHi [Client Name],\n\nI am happy to announce that the project is complete! All of the code has been successfully pushed to the private GitHub repository.\n\nYou can access the source code here: [Insert GitHub Link]\n\n**To get the React app running on your local machine:**\n1. Clone the repository\n2. Open your terminal in the project folder and run `npm install` to install dependencies\n3. Run `npm run dev` to start the local development server\n\nIt has been a wonderful experience working with you to bring this project to life. Please feel free to close the contract on Upwork, and if you are happy with my work, a positive review would mean the world to me.\n\nI am always available if you need a developer for future projects. Best of luck with the launch!\n\nBest regards,\nHarry"
+  },
+  {
+    "title": "Git Branch Creation",
+    "prompt": "Leif, what is the terminal command to create a new Git branch called 'feature/stripe-integration' and switch to it immediately?",
+    "perfect_response": "The quickest and most common command to create a new branch and switch to it simultaneously is using `git checkout` with the `-b` flag.\n\nHere is the exact command you should give the client:\n\n```bash\ngit checkout -b feature/stripe-integration\n```\n\nAlternatively, if they are using a very modern version of Git, they can also use the newer `switch` command:\n\n```bash\ngit switch -c feature/stripe-integration\n```"
+  }
+]

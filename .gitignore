@@ -1,5 +1,6 @@
 # === SECRETS — Never commit these ===
 .env
+DEVELOPMENT_LOG.md
 
 # === Python virtual environment ===
 venv/
